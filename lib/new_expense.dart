@@ -31,6 +31,23 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  void _submitExpenseData(){
+    // try to convert the amount to a double, if it fails, it will return null
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    
+    if (_titleController.text.trim().isEmpty || amountIsInvalid || _selectedDate == null) {
+      // show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter valid data!'),
+        ),
+      );
+      return;
+
+    }
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -116,10 +133,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text('Save Expense'),
               ),
               // ElevatedButton(
