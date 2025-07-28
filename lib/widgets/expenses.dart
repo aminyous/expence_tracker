@@ -44,7 +44,6 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
-
     final expenseIndex = _registredExpenses.indexOf(expense);
 
     setState(() {
@@ -52,20 +51,24 @@ class _ExpensesState extends State<Expenses> {
     });
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
-       SnackBar(
+      SnackBar(
         duration: const Duration(seconds: 3),
         content: const Text('Expense deleted.'),
-        action: SnackBarAction(label: 'Undo', onPressed: (){
-          setState(() {
-            _registredExpenses.insert(expenseIndex, expense);
-          });
-        }),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _registredExpenses.insert(expenseIndex, expense);
+              });
+            }),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final heeight = MediaQuery.of(context).size.height;
     Widget mainContent = const Center(
       child: Text('No expenses found. Start adding some!'),
     );
@@ -84,14 +87,25 @@ class _ExpensesState extends State<Expenses> {
         ],
         title: const Text('Flutter ExpensesTracker'),
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _registredExpenses),
-          Expanded(
-            child: mainContent,
-          )
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: _registredExpenses),
+                Expanded(
+                  child: mainContent,
+                )
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Chart(expenses: _registredExpenses),
+                ),
+                Expanded(
+                  child: mainContent,
+                )
+              ],
+            ),
     );
   }
 }
