@@ -68,7 +68,6 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final heeight = MediaQuery.of(context).size.height;
     Widget mainContent = const Center(
       child: Text('No expenses found. Start adding some!'),
     );
